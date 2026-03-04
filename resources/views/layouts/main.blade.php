@@ -6,86 +6,73 @@
     <title>@yield('title', 'Health')</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
     <style>
-  :root{
-    --blue-1:#0b5ed7;
-    --blue-2:#2b7cff;
-    --blue-3:#eaf3ff;
-    --blue-4:#f6fbff;
-  }
-  body{ background: var(--blue-4); }
-  .hero-blue{
-    background: linear-gradient(135deg, var(--blue-1), var(--blue-2));
-    color: #fff;
-  }
-  .hero-badge{ color:#0b5ed7; }
-  .hero-img{ max-height: 340px; object-fit: cover; }
-  .card-soft{ background: #fff; border-radius: 16px; }
-  .info-box{ background: var(--blue-3); }
-  .icon-dot{
-    width: 10px; height: 10px; margin-top: 7px;
-    border-radius: 999px; background: var(--blue-1); flex: 0 0 10px;
-  }
-    .register-wrap{
-    background: linear-gradient(135deg, var(--blue-1), var(--blue-2));
-  }
-</style>
+      :root{
+        --blue-1:#0b5ed7;
+        --blue-2:#2b7cff;
+        --blue-3:#eaf3ff;
+        --blue-4:#f6fbff;
+      }
+      body{ background: var(--blue-4); }
+      .hero-blue{
+        background: linear-gradient(135deg, var(--blue-1), var(--blue-2));
+        color: #fff;
+      }
+      .hero-badge{ color:#0b5ed7; }
+      .hero-img{ max-height: 340px; object-fit: cover; }
+      .card-soft{ background: #fff; border-radius: 16px; }
+      .info-box{ background: var(--blue-3); }
+      .icon-dot{
+        width: 10px; height: 10px; margin-top: 7px;
+        border-radius: 999px; background: var(--blue-1); flex: 0 0 10px;
+      }
+      .register-wrap{
+        background: linear-gradient(135deg, var(--blue-1), var(--blue-2));
+      }
+    </style>
 </head>
 
 <body>
-    <main class="main mt-3">
-        <!-- <nav class="navbar navbar-expand-lg bg-body-tertiary">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="{{ route('home') }}">Logo</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="{{ route('home') }}">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Dashboard</a>
-                    </li>
-                    @if (Route::has('login'))
-                        @auth
+    {{-- NAV тільки для залогінених і тільки на dashboard --}}
+    @auth
+        @if (Route::is('dashboard'))
+            <nav class="navbar navbar-expand-lg bg-white shadow-sm">
+                <div class="container">
+                    <a class="navbar-brand fw-semibold" href="{{ route('dashboard') }}">Health</a>
+
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#topNav">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+
+                    <div class="collapse navbar-collapse" id="topNav">
+                        <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-2">
                             <li class="nav-item">
-                                <a class="nav-link" href="#">Dashboard</a>
+                                <span class="nav-link">{{ auth()->user()->name }}</span>
                             </li>
-                        @else
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('register') }}">Register</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('login') }}">Login</a>
-                            </li>
-                        @endif
-                    @endif
-                </ul>
+                            <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+                            <button type="submit" class="btn btn-link nav-link p-0">Logout</button>
+                            </form>
+                        </ul>
+                    </div>
                 </div>
-            </div>
-        </nav> -->
+            </nav>
+        @endif
+    @endauth
+
+    <main class="main mt-3">
         <div class="container">
 
-                <!-- @if ($errors->any())
-                    <div class="alert alert-danger">
-                        <ul>
-                         @foreach ($errors->all() as $error) -->
-                                <!-- <li>{{ $error }}</li> -->
-                            <!-- @endforeach -->
-                        <!-- </ul>
-                    </div>
-                @endif  -->
-
-                @if (session('succes'))
-                <div class="alert alert-succes">
+            {{-- повідомлення успіху (виправив succes/succes -> success) --}}
+            @if (session('success'))
+                <div class="alert alert-success">
                     {{ session('success') }}
                 </div>
-            
             @endif
+
             @yield('content')
         </div>
     </main>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
